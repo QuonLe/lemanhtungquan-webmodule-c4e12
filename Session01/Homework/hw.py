@@ -15,15 +15,15 @@ def techkids():
 def ketqua(weight,height):
     BMI =  weight / ( height * height )
     if BMI < 16:
-        print("Severely underweight")
+        ket_qua = ("Severely underweight")
     elif 16 <= BMI <18.5:
-        print("Underweight")
+        ket_qua = ("Underweight")
     elif 18.5 <= BMI < 25:
-        print("Normal")
+        ket_qua = ("Normal")
     elif 25 <= BMI <30:
-        print("Overweight")
+        ket_qua = ("Overweight")
     else:
-        print("Obese")
+        ket_qua = ("Obese")
     return ketqua
 
 @app.route('/praticalex1')
