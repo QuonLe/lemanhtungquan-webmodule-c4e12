@@ -1,6 +1,9 @@
 .navbar-brand{
-  font-size: 25px;
-  font-style: oblique;
-  color: red;
+  font-size: 30px;
   font-family: Lobster, monospace;
+}
+
+.carousel-caption{
+  top: 40%;
+  left: 9%;
 }
