@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import mlab
 from mongoengine import * #Document,StringField,FloatField
 # from faker import Faker
@@ -42,6 +42,24 @@ def dict_demo():
 @app.route('/css_demo')
 def css_demo():
     return render_template('css_demo.html')
+
+@app.route('/admin_demo')
+def admin():
+    girl_list = Girl.objects()
+    return render_template('admin.html', girls = girl_list)
+
+@app.route('/add_girl', methods = ['GET','POST'])
+def add_girl():
+    if request.method == "GET":
+        return render_template('add_girl.html')
+    elif request.method == "POST":
+        form = request.form
+        name = form['name']
+        image = form['image']
+        description = form['description']
+        girl = Girl(name=name, image=image, description=description, rating = 4.1)
+        girl.save()
+        return "Added"
 
 if __name__ == '__main__':
   app.run(debug=True)
