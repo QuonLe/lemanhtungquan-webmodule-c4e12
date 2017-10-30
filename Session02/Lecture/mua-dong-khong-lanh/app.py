@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import mlab
 from mongoengine import * #Document,StringField,FloatField
 # from faker import Faker
@@ -12,14 +12,6 @@ class Girl(Document):
     description = StringField()
     rating = FloatField()
 
-# f = Faker()
-#
-# for _ in range(20):
-#     g = Girl(name = f.name(),
-#     image ="https://source.unsplash.com/500x300/?sexy",
-#     description = f.text(),
-#     rating = 4.1)
-#     g.save()
 
 @app.route('/')
 def index():
@@ -60,6 +52,50 @@ def add_girl():
         girl = Girl(name=name, image=image, description=description, rating = 4.1)
         girl.save()
         return "Added"
+
+@app.route('/test')
+def test():
+    return render_template('/test.html')
+
+# #Mongo
+# #1 Find record base on id
+# # Mongoengine lazy loading
+# girl = Girl.objects().with_id("59e33402aa27240008a46004")
+#
+# #2 Delete
+# if girl is None:
+#     print("Not found")
+# else:
+#     girl.delete()
+
+
+
+@app.route('/delete_girl/<girl_id>')
+def delete_girl(girl_id):
+    girl = Girl.objects().with_id(girl_id)
+    if girl is None:
+        print("Not found")
+    else:
+        girl.delete()
+        return redirect('/admin_demo')
+
+@app.route('/update_girl/<girl_id>', methods = ['GET','POST'])
+def update_girl(girl_id):
+    girl = Girl.objects().with_id(girl_id)
+    if request.method == "GET":
+        return render_template('/update_girl.html' , girl = girl)
+    elif request.method == "POST":
+        form = request.form
+        name = form['name']
+        image = form['image']
+        description = form['description']
+        girl.update(set__name = name, set__description = description, set__image =  image)
+        return redirect ('/admin_demo')
+
+
+
+
+
 
 if __name__ == '__main__':
   app.run(debug=True)
